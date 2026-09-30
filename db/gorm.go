@@ -85,14 +85,14 @@ func (c *DbContext) isEmptyResultError(err error) bool {
 	return errStr == "record not found"
 }
 
-// Return new ID using UUID version 4, and inlucde it to the transaction.
+// Return new ID using UUID version 4, and include it to the transaction.
 func (c *DbContext) newRandomID(tx *gorm.DB, typ RefType) uuid.UUID {
 	id := NewRandomID(typ)
 	tx.Create(id)
 	return id.Guid
 }
 
-// Return new ID using UUID version 7, and inlucde it to the transaction.
+// Return new ID using UUID version 7, and include it to the transaction.
 func (c *DbContext) newTimeAwareID(tx *gorm.DB, typ RefType) uuid.UUID {
 	id := NewTimeAwareID(typ)
 	tx.Create(id)

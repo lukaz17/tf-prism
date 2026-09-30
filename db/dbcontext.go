@@ -30,6 +30,10 @@ const (
 	DbMySQL    DbType = "mysql"
 )
 
+const (
+	RefTypeLink RefType = 0x36ac99f1
+)
+
 // DbContext encapsulate all actions related to reading from and writing to database.
 type DbContext struct {
 	db  *gorm.DB
