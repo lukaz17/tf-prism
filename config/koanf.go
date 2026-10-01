@@ -1,18 +1,16 @@
-// Copyright (C) 2025 T-Force I/O
-// This file is part of TFprism
+// Copyright (C) 2025  T-Force I/O
 //
-// TFprism is free software: you can redistribute it and/or modify
+// This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// the Free Software Foundation, version 3 of the License.
 //
-// TFprism is distributed in the hope that it will be useful,
+// This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with TFprism. If not, see <https://www.gnu.org/licenses/>.
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package config
 
@@ -27,6 +25,7 @@ import (
 	"github.com/knadh/koanf/providers/file"
 	"github.com/knadh/koanf/providers/structs"
 	"github.com/knadh/koanf/v2"
+	"github.com/tforceaio/tf-prism/db"
 )
 
 var cfg *RootConfig
@@ -71,6 +70,10 @@ func DefaultConfig() *koanf.Koanf {
 
 	k.Load(
 		structs.Provider(RootConfig{
+			Database: &DatabaseConfig{
+				Type: db.DbPostgres,
+				Uri:  "",
+			},
 			Logger: &LoggerConfig{
 				Level: "info",
 			},
