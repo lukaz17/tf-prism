@@ -1,18 +1,16 @@
-// Copyright (C) 2025 T-Force I/O
-// This file is part of TFprism
+// Copyright (C) 2025  T-Force I/O
 //
-// TFprism is free software: you can redistribute it and/or modify
+// This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// the Free Software Foundation, version 3 of the License.
 //
-// TFprism is distributed in the hope that it will be useful,
+// This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with TFprism. If not, see <https://www.gnu.org/licenses/>.
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package db
 
@@ -69,7 +67,10 @@ func (c *DbContext) Disconnect() {
 
 // Migrate database schema to match database models.
 func (c *DbContext) Migrate() error {
-	return c.db.AutoMigrate()
+	return c.db.AutoMigrate(
+		&ID{},
+		&Link{},
+	)
 }
 
 // Count number of records in a single table that satisfy provided condition.
@@ -87,6 +88,8 @@ func (c *DbContext) Count(model interface{}, query, args interface{}) (int64, er
 
 // Truncate all tables.
 func (c *DbContext) Reset() {
+	c.Truncate(&Link{})
+	c.Truncate(&ID{})
 }
 
 // Truncate specified table.
