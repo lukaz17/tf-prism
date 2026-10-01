@@ -77,6 +77,11 @@ func DefaultConfig() *koanf.Koanf {
 			Logger: &LoggerConfig{
 				Level: "info",
 			},
+			Server: &ServerConfig{
+				HTTP: &HTTPConfig{
+					Port: 17171,
+				},
+			},
 		}, "koanf"),
 		nil,
 	)

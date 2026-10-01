@@ -12,8 +12,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-/*
-Package engine is the core of the program. It wires up logic from other packages
-to handles request from users and delivers the result.
-*/
 package engine
+
+import "github.com/rs/zerolog"
+
+// Log error message
+func logProgramError(logger zerolog.Logger, err error) {
+	if err != nil {
+		logger.Err(err).Msg("Unexpected error has occurred. Program will exit.")
+	}
+}

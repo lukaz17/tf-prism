@@ -26,6 +26,7 @@ type RootConfig struct {
 	IsPortable bool            `koanf:"-"`
 	Database   *DatabaseConfig `koanf:"db"`
 	Logger     *LoggerConfig   `koanf:"log"`
+	Server     *ServerConfig   `koanf:"server"`
 }
 
 // DatabaseConfig contains configurations for database connection.
@@ -34,7 +35,17 @@ type DatabaseConfig struct {
 	Uri  string `koanf:"uri"`
 }
 
+// HTTPConfig contains configurations for the HTTP server.
+type HTTPConfig struct {
+	Port int `koanf:"port"`
+}
+
 // LoggerConfig contains configurations for logging.
 type LoggerConfig struct {
 	Level string `koanf:"level"`
+}
+
+// ServerConfig contains configurations for the server component.
+type ServerConfig struct {
+	HTTP *HTTPConfig `koanf:"http"`
 }

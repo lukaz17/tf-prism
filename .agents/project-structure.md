@@ -52,6 +52,7 @@ This project add more packages to the standard layout:
 ├── db/             # data models and database access
 ├── diag/           # logging, instruments, progress tracking for long-running operations
 ├── engine/         # core application logic wiring CLI commands/controller to business logic
+├── server/         # HTTP server for service API and WEB
 ```
 
 ## Project-specific

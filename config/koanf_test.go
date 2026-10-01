@@ -29,11 +29,14 @@ func TestDefaultConfig(t *testing.T) {
 	if cfg.Logger.Level != "info" {
 		t.Errorf("Wrong Logger.Level. Expected '%s' Actual '%s'", "info", cfg.Logger.Level)
 	}
+	if cfg.Server.HTTP.Port != 8080 {
+		t.Errorf("Wrong Server.HTTP.Port. Expected '%d' Actual '%d'", 8080, cfg.Server.HTTP.Port)
+	}
 }
 
 func TestFileConfig(t *testing.T) {
 	contents := []string{
-		"logger:",
+		"log:",
 		"  level: debug",
 	}
 	f := filepath.Join(t.TempDir(), "prism.yaml")
@@ -48,10 +51,13 @@ func TestFileConfig(t *testing.T) {
 	if cfg.Logger.Level != "debug" {
 		t.Errorf("Wrong Logger.Level. Expected '%s' Actual '%s'", "debug", cfg.Logger.Level)
 	}
+	if cfg.Server.HTTP.Port != 8080 {
+		t.Errorf("Wrong Server.HTTP.Port. Expected '%d' Actual '%d'", 8080, cfg.Server.HTTP.Port)
+	}
 }
 
 func TestEnvConfig(t *testing.T) {
-	t.Setenv("TFPRISM_LOGGER_LEVEL", "warn")
+	t.Setenv("TFPRISM_LOG_LEVEL", "warn")
 	cfg, err := buildConfig(true, filepath.Join(t.TempDir(), "prism.yaml"))
 	if err != nil {
 		t.Error("Error get config from env", err)

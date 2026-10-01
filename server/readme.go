@@ -13,7 +13,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 /*
-Package engine is the core of the program. It wires up logic from other packages
-to handles request from users and delivers the result.
+Package server provides the HTTP server of the program. It registers the routes and serves incoming requests.
 */
-package engine
+package server

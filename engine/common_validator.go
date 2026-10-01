@@ -12,8 +12,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-/*
-Package engine is the core of the program. It wires up logic from other packages
-to handles request from users and delivers the result.
-*/
 package engine
+
+import (
+	"fmt"
+	"os"
+)
+
+// Check a path is exist on disk.
+func ValidateFileExists(path string) error {
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return fmt.Errorf("path not exist: %s", path)
+	}
+	return nil
+}
+
+// Check that a string is not empty.
+func ValidateString(value, label string) error {
+	if value == "" {
+		return fmt.Errorf("%s cannot be empty", label)
+	}
+	return nil
+}
