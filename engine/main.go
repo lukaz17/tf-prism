@@ -97,7 +97,10 @@ Licensed under GPL-3.0 license. See COPYING file along with this program for mor
 			cmd.Help()
 		},
 	}
-	rootCmd.AddCommand(ServeCmd())
+	rootCmd.AddCommand(
+		ConfigCmd(),
+		ServeCmd(),
+	)
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
