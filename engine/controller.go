@@ -1,24 +1,23 @@
-// Copyright (C) 2025 T-Force I/O
-// This file is part of TFprism
+// Copyright (C) 2025  T-Force I/O
 //
-// TFprism is free software: you can redistribute it and/or modify
+// This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// the Free Software Foundation, version 3 of the License.
 //
-// TFprism is distributed in the hope that it will be useful,
+// This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with TFprism. If not, see <https://www.gnu.org/licenses/>.
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package engine
 
 import (
 	"github.com/rs/zerolog"
 	"github.com/tforceaio/tf-prism/config"
+	"github.com/tforceaio/tf-prism/diag"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
@@ -35,7 +34,7 @@ type Controller struct {
 // useFS will instruct this function to read configurations and create log file.
 func NewController(useFS bool) *Controller {
 	cfg, err := config.InitKoanf(useFS)
-	logger, logFile, err2 := config.InitZerolog(cfg.ConfigDir, useFS)
+	logger, logFile, err2 := diag.NewLogger(cfg, useFS)
 	if err != nil {
 		logger.Err(err).Msg("error initializing config")
 	}

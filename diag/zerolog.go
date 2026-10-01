@@ -1,20 +1,18 @@
-// Copyright (C) 2025 T-Force I/O
-// This file is part of TFprism
+// Copyright (C) 2025  T-Force I/O
 //
-// TFprism is free software: you can redistribute it and/or modify
+// This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// the Free Software Foundation, version 3 of the License.
 //
-// TFprism is distributed in the hope that it will be useful,
+// This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with TFprism. If not, see <https://www.gnu.org/licenses/>.
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package config
+package diag
 
 import (
 	"os"
@@ -22,6 +20,7 @@ import (
 	"time"
 
 	"github.com/rs/zerolog"
+	"github.com/tforceaio/tf-prism/config"
 	"github.com/tforceaio/tf-prism/tui"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
@@ -34,9 +33,8 @@ const (
 )
 
 // Entrypoint for creating a ZeroLog logger instance.
-func InitZerolog(configDir string, useFS bool) (zerolog.Logger, *lumberjack.Logger, error) {
-	level := resolveLevel()
-	zerolog.SetGlobalLevel(level)
+func NewLogger(cfg *config.RootConfig, useFS bool) (zerolog.Logger, *lumberjack.Logger, error) {
+	zerolog.SetGlobalLevel(resolveLevel(cfg))
 
 	colorSupported := tui.IsTTY()
 	consoleWriter := &zerolog.FilteredLevelWriter{
@@ -46,7 +44,7 @@ func InitZerolog(configDir string, useFS bool) (zerolog.Logger, *lumberjack.Logg
 		Level: zerolog.TraceLevel,
 	}
 
-	logFile, err := InitLogFile(useFS, configDir)
+	logFile, err := initLogFile(useFS, cfg.ConfigDir)
 	if logFile == nil {
 		consoleLogger := zerolog.New(consoleWriter).With().Timestamp().Logger()
 		return consoleLogger, nil, err
@@ -64,11 +62,11 @@ func InitZerolog(configDir string, useFS bool) (zerolog.Logger, *lumberjack.Logg
 }
 
 // Create and return rotating log file writer only if useFS is true.
-func InitLogFile(useFS bool, workdingDir string) (*lumberjack.Logger, error) {
+func initLogFile(useFS bool, workingDir string) (*lumberjack.Logger, error) {
 	if !useFS {
 		return nil, nil
 	}
-	logDir := workdingDir
+	logDir := workingDir
 	if logDir == "" {
 		logDir = "."
 	}
@@ -85,7 +83,7 @@ func InitLogFile(useFS bool, workdingDir string) (*lumberjack.Logger, error) {
 }
 
 // Parse configured log level, fallback to info when invalid or missing.
-func resolveLevel() zerolog.Level {
+func resolveLevel(cfg *config.RootConfig) zerolog.Level {
 	if cfg == nil || cfg.Logger == nil {
 		return zerolog.InfoLevel
 	}

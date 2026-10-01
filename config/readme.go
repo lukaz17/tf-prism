@@ -15,7 +15,6 @@
 // along with TFprism. If not, see <https://www.gnu.org/licenses/>.
 
 /*
-Package config contains initialization code for logging, and reading configuration
-file and environment variables.
+Package config bootstrap gloabl configuration from file and environment variables.
 */
 package config
