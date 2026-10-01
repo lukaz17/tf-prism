@@ -32,6 +32,7 @@ var minorVersion = 1
 var patchVersion = 0
 var gitCommit, gitDate, gitBranch string
 
+// Return the current application version with build metadata.
 func version() string {
 	originDate := time.Date(2026, time.September, 1, 0, 0, 0, 0, time.UTC)
 	gitDate2, err := time.Parse("20060102", gitDate)

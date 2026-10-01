@@ -1,2 +1,29 @@
-.bin
-.tests
+# Build artifacts
+*.dll
+*.dylib
+*.exe
+*.exe~
+*.so
+
+# Test artifacts
+*.test
+coverage.out
+coverage.html
+coverage.txt
+
+# Local env and secrets
+.env
+.env.*
+*.local.env
+
+# Profiling data
+*.prof
+*.pprof
+profiles/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Project-specific
