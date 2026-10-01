@@ -20,6 +20,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 	"github.com/tforceaio/tf-prism/config"
+	"github.com/tforceaio/tf-prism/db"
 	"github.com/tforceaio/tf-prism/server"
 )
 
@@ -40,11 +41,21 @@ func NewServeModule(logger zerolog.Logger, cfg *config.RootConfig) *ServeModule 
 
 // Start listen for HTTP requests. Blocks until the server is stopped.
 func (m *ServeModule) Start() error {
+	ctx, err := db.Connect(m.cfg.Database.Type, m.cfg.Database.Uri)
+	if err != nil {
+		return fmt.Errorf("connect to database: %w", err)
+	}
+	defer ctx.Disconnect()
+
+	if err := ctx.Migrate(); err != nil {
+		return fmt.Errorf("run database migration: %w", err)
+	}
+
 	addr := fmt.Sprintf(":%d", m.cfg.Server.HTTP.Port)
 	m.logger.Info().
 		Str("addr", addr).
 		Msg("Start listening for HTTP requests.")
-	m.httpSrv = server.New(addr)
+	m.httpSrv = server.New(addr, ctx)
 	return m.httpSrv.Start()
 }
 

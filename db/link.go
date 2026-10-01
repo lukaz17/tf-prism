@@ -42,8 +42,11 @@ func (c *DbContext) GetLinkByURL(url string) (*Link, error) {
 	return c.findLinkByURL(c.db, url)
 }
 
-// Return links by ID.
+// Return links by ID. Returns all links when ids is empty.
 func (c *DbContext) GetLinks(ids []uuid.UUID) ([]*Link, error) {
+	if len(ids) == 0 {
+		return c.findLinks(c.db)
+	}
 	return c.findLinksByID(c.db, ids)
 }
 
@@ -122,6 +125,14 @@ func (c *DbContext) findLinkByURL(tx *gorm.DB, url string) (*Link, error) {
 		return nil, nil
 	}
 	return doc, result.Error
+}
+
+// Return all links.
+func (c *DbContext) findLinks(tx *gorm.DB) ([]*Link, error) {
+	var docs []*Link
+	result := tx.Model(&Link{}).
+		Find(&docs)
+	return docs, result.Error
 }
 
 // Return links with given IDs from transaction.

@@ -22,7 +22,7 @@ import (
 )
 
 func TestHealthRoute(t *testing.T) {
-	s := New("")
+	s := New("", nil)
 	req := httptest.NewRequest(http.MethodGet, "/health", nil)
 	rec := httptest.NewRecorder()
 	s.Handler().ServeHTTP(rec, req)
@@ -40,7 +40,7 @@ func TestHealthRoute(t *testing.T) {
 }
 
 func TestUnknownRoute(t *testing.T) {
-	s := New("")
+	s := New("", nil)
 	req := httptest.NewRequest(http.MethodGet, "/nope", nil)
 	rec := httptest.NewRecorder()
 	s.Handler().ServeHTTP(rec, req)

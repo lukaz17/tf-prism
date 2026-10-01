@@ -19,6 +19,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/tforceaio/tf-prism/db"
 )
 
 // Server is a thin wrapper around http.Server with pre-registered routes.
@@ -28,9 +29,9 @@ type Server struct {
 }
 
 // Entrypoint for creating a new Server listening on addr.
-func New(addr string) *Server {
+func New(addr string, ctx *db.DbContext) *Server {
 	s := &Server{}
-	s.engine = s.router()
+	s.engine = s.router(ctx)
 	s.http = &http.Server{
 		Addr:    addr,
 		Handler: s.engine,
@@ -62,12 +63,13 @@ func (s *Server) Close() error {
 
 // Build the route table served by this Server. Callable again to rebuild after
 // mutating routes.
-func (s *Server) router() *gin.Engine {
+func (s *Server) router(ctx *db.DbContext) *gin.Engine {
 	// gin.New() instead of Default: no built-in logger, project logs via zerolog.
 	r := gin.New()
 	r.Use(gin.Recovery())
 	r.GET("/health", func(c *gin.Context) {
 		c.String(http.StatusOK, "ok")
 	})
+	registerLinkRoutes(r, ctx)
 	return r
 }
